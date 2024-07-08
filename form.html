@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+        <div>
+            <form action="">
+                <h3>Enquire Now</h3>
+
+                <div class="inpuOuter">
+                    <span></span>
+                    <label for="">Name <sup>*</sup></label>
+                    <input type="text" name="uname"/>
+                </div>
+                <div class="inpuOuter">
+                    <span></span>
+                    <label for="">Phone <sup>*</sup></label>
+                    <input type="text" name="uphone"/>
+                </div>
+                <div class="inpuOuter">
+                    <span></span>
+                    <label for="">Email <sup>*</sup></label>
+                    <input type="text" name="uemail"/>
+                </div>
+              
+                <div class="inpuOuter">
+                    <label for="">Message </label>
+                    <textarea name="umessaage" ></textarea>
+                </div>
+                <button>Save</button>
+
+            </form>
+        </div>
+        <div>
+            <table cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Sr No.</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Pradeep</td>
+                        <td>8888888</td>
+                        <td>pradeep@gmail.com</td>
+                        <td>hello</td>
+                        <td>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+<script>
+    let errorObj=[
+        {
+            'inputName':'uname',
+            'errorBlank':'Please Enter Your Name',
+            'regexAllow':true,
+            'regex': /^[a-zA-Z ]+$/,
+            'regexError':'Please Correct Name value'
+        },
+       
+        {
+            'inputName':'uphone',
+            'errorBlank':'Please Enter Your Phone' ,
+            'regexAllow':true,
+            'regex':/^\d{10}$/,
+            'regexError':'Please Correct Name Phone Number'
+            
+        },
+        {
+            'inputName':'uemail',
+            'errorBlank':'Please Enter Your Email',
+            'regexAllow':false, 
+        }
+    ]
+
+
+
+    let form=document.querySelector("form");
+    let allInputs=document.querySelectorAll("form input");
+    let errorBox=document.querySelectorAll("form span");
+    form.addEventListener("submit",(event)=>{
+
+
+        allInputs.forEach((input,index)=>{
+
+            errorBox[index].innerHTML=""
+
+             if(input.value==""){
+                errorBox[index].innerHTML=errorObj[index].errorBlank
+             }
+             else if(errorObj[index].regexAllow){
+                  if(!errorObj[index].regex.test(input.value)){
+                    errorBox[index].innerHTML=errorObj[index].regexError
+                  }
+             }
+        })
+
+        // let currentForm=event.target;
+        // console.log(allInputs)
+        event.preventDefault();
+    })
+</script>
+</html>
