@@ -49,16 +49,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Pradeep</td>
-                        <td>8888888</td>
-                        <td>pradeep@gmail.com</td>
-                        <td>hello</td>
-                        <td>
-                            <button>Delete</button>
-                        </td>
-                    </tr>
+                   
                 </tbody>
             </table>
         </div>
@@ -95,26 +86,127 @@
     let form=document.querySelector("form");
     let allInputs=document.querySelectorAll("form input");
     let errorBox=document.querySelectorAll("form span");
+     let userDisplayRow=document.querySelector("table tbody")
+    let userData=[]
+
     form.addEventListener("submit",(event)=>{
 
+        let errorStatus=true;
 
         allInputs.forEach((input,index)=>{
-
+           
             errorBox[index].innerHTML=""
 
              if(input.value==""){
-                errorBox[index].innerHTML=errorObj[index].errorBlank
+                errorBox[index].innerHTML=errorObj[index].errorBlank;
+                 errorStatus=false;
              }
              else if(errorObj[index].regexAllow){
                   if(!errorObj[index].regex.test(input.value)){
                     errorBox[index].innerHTML=errorObj[index].regexError
+                   errorStatus=false;
                   }
              }
+             
+             
         })
+
+       console.log(errorStatus)
+
+
+        if(errorStatus){
+            let obj={
+                'uname':event.target.uname.value,
+                'uphone':event.target.uphone.value,
+                'uemail':event.target.uemail.value,
+                'umessage':event.target.umessaage.value,
+            }
+
+            let userExists=userData.filter((v)=>{
+                if(v.uphone==event.target.uphone.value ||  v.uemail==event.target.uemail.value){
+                    return v
+                }
+            })
+
+          if(userExists.length==1){
+             alert("Uphone or Email Allredy Exists...")
+          }
+          else{
+            userData.push(obj)
+            displayUserData()
+            console.log(userData)
+            event.target.reset()
+          }
+           
+        }
+
+
+
 
         // let currentForm=event.target;
         // console.log(allInputs)
         event.preventDefault();
     })
+
+
+    let displayUserData=()=>{
+        userDisplayRow.innerHTML=''
+
+        let row=''
+        userData.forEach((items,index)=>{
+
+            row+=`<tr>
+                        <td>${index+1}</td>
+                        <td>${items.uname}</td>
+                        <td>${items.uphone}</td>
+                        <td>${items.uemail}</td>
+                        <td>${items.umessage}</td>
+                        <td>
+                            <button data-id="${index}">Delete</button>
+                        </td>
+                    </tr>`
+        })
+
+        userDisplayRow.innerHTML=row;
+    }
+    
+
+    userDisplayRow.addEventListener("click",(event)=>{
+        if(event.target.tagName=="BUTTON"){
+           let delId= event.target.getAttribute("data-id")
+
+           if(confirm("Are you Sure want Delete??...")){
+                userData.splice(delId,1)
+                displayUserData()
+           }
+          
+        }
+    })
+
+    // let user=[
+    //     {
+    //         'uname':'pradeep',
+    //         'uphone':'888888888',
+    //     },
+    //     {
+    //         'uname':'ravi',
+    //         'uphone':'555555555',
+    //     },
+    //     {
+    //         'uname':'raj',
+    //         'uphone':'666666666',
+    //     },
+    // ]
+
+    // let userCheck=user.filter((v)=>{
+    //     if(v.uphone=="555555555"){
+    //         return v;
+    //     }
+    // })
+
+    // console.log(userCheck)
+
+
+
 </script>
 </html>
